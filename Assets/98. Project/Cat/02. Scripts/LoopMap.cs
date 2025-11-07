@@ -8,7 +8,7 @@ public class LoopMap : MonoBehaviour
     
     void Start()
     {
-        meshRenderer = this.GetComponent<MeshRenderer>();
+        meshRenderer = GetComponent<MeshRenderer>();
     }
 
     void Update()
