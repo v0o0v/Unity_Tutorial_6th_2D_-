@@ -3,31 +3,46 @@ using UnityEngine;
 
 public class AmongusController : MonoBehaviour
 {
+    private Rigidbody rb;
+
+    private Vector3 dir;
+    
     public float moveSpeed = 5f;
     public float turnSpeed = 5f;
-    
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
     void Update()
     {
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
-        Vector3 dir = new Vector3(h, 0, v).normalized;
+        dir = new Vector3(h, 0, v).normalized;
+        
+        Turn();
+    }
 
-        Move(dir);
+    void FixedUpdate()
+    {
+        Move();
+    }
 
-        if (h == 0 && v == 0)
+    public void Move()
+    {
+        // rb.linearVelocity = dir * moveSpeed;
+
+        Vector3 targetPosition = rb.position + dir * moveSpeed;
+        rb.MovePosition(targetPosition);
+    }
+    
+    public void Turn()
+    {
+        if (dir.x == 0 && dir.z == 0)
             return;
-
-        Turn(dir);
-    }
-
-    public void Move(Vector3 _dir)
-    {
-        transform.position += _dir * moveSpeed * Time.deltaTime;
-    }
-
-    public void Turn(Vector3 _dir)
-    {
-        Quaternion newRotation = Quaternion.LookRotation(_dir);
+        
+        Quaternion newRotation = Quaternion.LookRotation(dir);
 
         transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, turnSpeed * Time.deltaTime);
     }
