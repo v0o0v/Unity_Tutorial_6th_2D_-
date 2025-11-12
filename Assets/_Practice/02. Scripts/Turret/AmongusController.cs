@@ -4,6 +4,7 @@ using UnityEngine;
 public class AmongusController : MonoBehaviour
 {
     private Rigidbody rb;
+    private Animator anim;
 
     private Vector3 dir;
     
@@ -14,6 +15,7 @@ public class AmongusController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
     }
 
     void Update()
@@ -21,7 +23,15 @@ public class AmongusController : MonoBehaviour
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
         dir = new Vector3(h, 0, v).normalized;
+        
+        // if (h != 0 || v != 0)
+        //     anim.SetBool("IsWalk", true);
+        // else
+        //     anim.SetBool("IsWalk", false);
 
+        bool isMove = h != 0 || v != 0;
+        anim.SetBool("IsWalk", isMove);
+        
         Jump();
     }
 
@@ -33,8 +43,6 @@ public class AmongusController : MonoBehaviour
 
     public void Move()
     {
-        // rb.linearVelocity = dir * moveSpeed;
-
         Vector3 targetPosition = rb.position + dir * moveSpeed;
         
         rb.MovePosition(targetPosition);
