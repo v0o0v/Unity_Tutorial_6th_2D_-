@@ -8,6 +8,7 @@ public class CharacterMovement2D : MonoBehaviour
     public float moveSpeed = 5f;
     public float jumpPower = 10f;
     private float h;
+    private float v;
 
     void Start()
     {
@@ -18,9 +19,10 @@ public class CharacterMovement2D : MonoBehaviour
     void Update()
     {
         h = Input.GetAxis("Horizontal"); // A, D 키보드에 대한 입력값
+        v = Input.GetAxis("Vertical"); // W, S 키보드에 대한 입력값
 
         ChangeSprite();
-        Jump();
+        // Jump();
     }
 
     void FixedUpdate()
@@ -57,7 +59,6 @@ public class CharacterMovement2D : MonoBehaviour
             transform.localScale = new Vector3(1, 1, 1);
         }
         
-        
         // // 삼항 연산자 활용
         // if (h != 0)
         // {
@@ -77,13 +78,16 @@ public class CharacterMovement2D : MonoBehaviour
     private void Move()
     {
         characterRb.linearVelocityX = h * moveSpeed; // x축으로 속도를 변경하는 기능
+        characterRb.linearVelocityY = v * moveSpeed; // y축으로 속도를 변경하는 기능
+        
+        // characterRb.linearVelocity = new Vector2(h, v) * moveSpeed;
     }
 
-    private void Jump()
-    {
-        if (Input.GetButtonDown("Jump"))
-        {
-            characterRb.AddForceY(jumpPower, ForceMode2D.Impulse);
-        }
-    }
+    // private void Jump()
+    // {
+    //     if (Input.GetButtonDown("Jump"))
+    //     {
+    //         characterRb.AddForceY(jumpPower, ForceMode2D.Impulse);
+    //     }
+    // }
 }
